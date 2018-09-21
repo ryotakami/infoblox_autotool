@@ -369,8 +369,8 @@ sub csv_create{
 			}
 		}
 		
-		# 前回レコードで除外申請日がない OR ドメイン参加かつ必須SW導入がある場合はMAC登録がある
-		if(($import_old_data[$i][$sabun_old_num6]eq'') or (($import_old_data[$i][$sabun_old_num1] eq $check1_old_value) and ($import_old_data[$i][$sabun_old_num3]ne''))){
+		# 前回レコードで除外申請日がある OR ドメイン参加かつ必須SW導入がある場合はMAC登録がある
+		if(($import_old_data[$i][$sabun_old_num6]ne'') or (($import_old_data[$i][$sabun_old_num1] eq $check1_old_value) and ($import_old_data[$i][$sabun_old_num3]ne''))){
 			$is_exist = 1;
 		}
 		
@@ -492,7 +492,7 @@ sub csv_create{
 		}
 		
 		# MACアドレスの重複チェック
-		if(&is_dupricate(\@mac_add_del, $i) eq 1){
+		if(&is_duplicate(\@mac_add_del, $i) eq 1){
 			&log_output("$mac_add_del[$i][0] は重複したMACアドレスのためスキップしました。\n",1);
 			next;
 		}
@@ -1323,7 +1323,7 @@ sub rotate_file{
 sub is_macaddr{
 	my $mac = $_[0];
 
-	if($mac =~ /^([0-9a-f]{2}:){5}[0-9a-f]{2}$/){
+	if($mac =~ /^([0-9a-f]{2}:){5}[0-9a-f]{2}/){
 		return 1;
 	}
 	else{
